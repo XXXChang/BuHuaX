@@ -1,0 +1,122 @@
+package com.sxt;
+
+import java.util.Scanner;
+
+public class CircleArrayQueue {
+	public static void main(String[] args) {
+		CircleArray queue =new CircleArray(4);
+		Scanner scanner=new Scanner(System.in);;
+		char key ;
+		boolean tip = true;
+		while(tip)
+		{
+			System.out.println("s(show):显示队列");
+			System.out.println("e(exit):退出程序");
+			System.out.println("a(add):增加数据到队列");
+			System.out.println("g(get):得到队列数据");
+			System.out.println("h(head):队列中的头数据");
+		
+		key=scanner.next().charAt(0);
+		switch (key) {
+		case's':
+			queue.ListQueue();
+			break;
+		case'a':
+			System.out.println("输入一个数");
+			int value=scanner.nextInt();
+			queue.AddQueue(value);
+			break;
+		case'g':
+			try {
+				int result= queue.GetQueue();
+				System.out.printf("取出的数据为：%d\n",result);
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+			break;
+		case'h':
+			try {
+				int head=queue.HeadQueue();
+				System.out.printf("头数据为：%d\n",head);
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+		case'e':
+			scanner.close();
+			tip=false;
+			break;
+			default:
+				break;
+			
+		}
+	}}
+}
+class CircleArray
+{
+	private int maxSize;
+	private int front;
+	private int rear;
+	private int arr[];
+	public CircleArray(int maxsize)
+	{
+		maxSize=maxsize;
+		arr=new int[maxSize];
+	}
+	public boolean IsFulled()
+	{
+		return (rear+1)%maxSize==front;
+	}
+	public boolean IsEmpty()
+	{
+		return rear==front;
+	}
+	public void AddQueue(int n)
+	{
+		if(IsFulled())
+		{
+			System.out.println("队列已满");
+			return;
+		}
+		
+		arr[rear]=n;
+		rear=(rear+1)%maxSize;
+	}
+	public int GetQueue()
+	{
+		if(IsEmpty())
+		{
+			throw new RuntimeException("队列空");
+			
+		}
+		int value =arr[front];
+		front=(front+1)%maxSize;
+		return value;
+	}
+	public int HeadQueue()
+	{
+		if(IsEmpty())
+		{
+			throw new RuntimeException("队列空");
+			
+		}
+		return arr[front];
+	}
+	public void ListQueue()
+	{
+		if(IsEmpty())
+		{
+			System.out.println("队列空");
+			return;
+		}
+		for (int i=front;i<front+Size();i++)
+		{
+			System.out.printf("arr[%d]:%d\n",(i%maxSize),arr[i%maxSize]);
+		}
+	}
+	public int Size()
+	{
+		return (rear+maxSize-front)%maxSize;
+	}
+}
